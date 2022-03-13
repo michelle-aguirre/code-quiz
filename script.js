@@ -10,6 +10,8 @@ var questions = document.getElementById("questions");
 var title = document.getElementById("title");
 var options = document.getElementById("options");
 var timeEl = document.getElementById("time");
+var submitbtn = document.getElementById("submit");
+var initials = document.getElementById("initials");
 
 //create object array of questions
 var questions = [
@@ -114,4 +116,35 @@ function answerKey() {
 }
 
 //function 4: game ends
+function finalDestiny() {
+    //re-hide the div, stop time, and unhide 'all done'
+    clearInterval(timerid);
+    var finalStage = document.getElementById ("all-done");
+    finalStage.removeAttribute ("class");
+    //updating the score with a time score=time
+    var finalScore = document.getElementById ("final");
+    finalScore.textContent = time;
+    //hide questions
+    questions.setAttribute ("class", "hide");
+}
+function scores() {
+    var enterText = initials.value.trim();
+    if (enterText !== ""){
+        var savedScores = JSON.parse(localStorage.getItem("savedScores")) || [];
+    var newScores = {
+        score: time,
+        initials: enterText,  
+    };
+    savedScores.push(newScores);
+    localStorage.setItem("savedScores", JSON.stringify(savedScores));
+    
+    }
+}
+function checkEntry(event){
+    if(event.key === "Enter"){
+        scores();
+    }
+}
+submitbtn.addEventListener("submit", checkEntry);
+
 startbtn.addEventListener("click", startQuiz);
